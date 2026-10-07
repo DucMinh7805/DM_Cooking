@@ -1,0 +1,43 @@
+name: Build downloadable World Kitchen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: world-kitchen-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run gameplay unit tests
+        run: npm test
+
+      - name: Build production game
+        run: npm run build
+
+      - name: Package downloadable web game
+        uses: actions/upload-artifact@v7
+        with:
+          name: world-kitchen-web-build
+          path: dist
+          if-no-files-found: error
+          retention-days: 30
