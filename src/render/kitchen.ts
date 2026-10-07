@@ -28,6 +28,7 @@ export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolea
 
  const station=(k==='find'||k==='choose')?pantryStation:k==='wash'?washStation:(k==='fold'||k==='knead'||k==='grate')?pastryStation:(k==='plate'||k==='assemble')?platingStation:isCooktop?cooktopStation:prepStation;
  drawStation(station,isCooktop);
+ drawCrew();
  drawTaskBadge();
 
  if(k==='slice'||k==='dice')drawCutting();
@@ -46,6 +47,8 @@ export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolea
  else if(k==='knead')drawKneading();
  else if(k==='assemble')drawAssembly();
 
+ drawPlayerHands();
+
  if(e.last&&k!=='mix'&&k!=='slice'&&k!=='dice'){circle(e.last.x,e.last.y,13,'#ffffffd9','#174b3b');circle(e.last.x,e.last.y,4,'#174b3b')}
 
  function drawStation(image:HTMLImageElement|null,cooktop:boolean){
@@ -53,6 +56,30 @@ export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolea
   if(image?.complete&&image.naturalWidth){c.drawImage(image,0,0,960,560);return}
   const fallback=c.createLinearGradient(0,0,0,560);fallback.addColorStop(0,'#174438');fallback.addColorStop(.22,cooktop?'#eadcc4':'#cf9965');fallback.addColorStop(1,cooktop?'#bba184':'#8c5c38');c.fillStyle=fallback;c.fillRect(0,0,960,560);
   shadow(25,'#06181166',12);box(78,78,804,432,34,cooktop?'#242827':'#e2b77d',cooktop?'#b9875c':'#f2d5a8');clearShadow();
+ }
+ function drawCrew(){
+  const customer=k==='choose'||k==='plate',bob=motion?Math.sin(time/420)*2:0;
+  c.save();c.globalAlpha=.96;c.translate(846,91+bob);
+  shadow(11,'#10251c66',5);ellipse(0,52,62,46,customer?'#b75543':'#f4efe1','#173d32');clearShadow();
+  box(-49,47,98,73,27,customer?'#c75f49':'#f8f2e5','#173d32');
+  circle(0,0,37,'#d99a72','#684536');
+  c.fillStyle=customer?'#3b2a28':'#f7f1e6';c.beginPath();c.arc(0,-5,39,Math.PI,TAU);c.fill();
+  if(!customer){for(let i=-2;i<=2;i++)circle(i*15,-38-Math.abs(i)*3,18,'#fffaf0','#d9d2c5')}
+  else{c.fillStyle='#352927';c.beginPath();c.arc(0,-7,39,Math.PI,TAU);c.fill();ellipse(-31,2,10,28,'#352927');ellipse(31,2,10,28,'#352927')}
+  circle(-13,-1,3,'#332c28');circle(13,-1,3,'#332c28');
+  c.strokeStyle='#8b4c43';c.lineWidth=3;c.beginPath();c.arc(0,12,11,.2,Math.PI-.2);c.stroke();
+  if(!customer){line(0,50,0,111,'#d7cbb8',3);circle(-18,72,3,'#c29b45');circle(18,72,3,'#c29b45')}
+  c.restore();
+  box(733,154,226,37,18,'#173f34e8','#ffffff33');text(customer?'KHÁCH ĐANG CHỜ MÓN':'BẾP TRƯỞNG MAI ĐANG HƯỚNG DẪN',846,173,10,'#fff1cf',900);
+  c.save();c.globalAlpha=.72;c.translate(102,104-bob*.6);
+  ellipse(0,46,48,35,'#365f51','#173d32');box(-38,42,76,55,23,'#e5eadf','#284f42');circle(0,3,29,'#b97855','#5a392c');c.fillStyle='#292522';c.beginPath();c.arc(0,-2,31,Math.PI,TAU);c.fill();circle(-10,3,2.5,'#2f2925');circle(10,3,2.5,'#2f2925');c.restore();
+  box(35,143,134,31,15,'#173f34c9');text('PHỤ BẾP AN',102,159,10,'#fff1cf',900);
+ }
+ function drawPlayerHands(){
+  const skin='#d89b74',outline='#6b4637',sleeve='#f4efe4';
+  const arm=(fromX:number,targetX:number,targetY:number,flip=false)=>{c.save();c.globalAlpha=.92;c.lineCap='round';c.strokeStyle=sleeve;c.lineWidth=52;c.beginPath();c.moveTo(fromX,585);c.quadraticCurveTo((fromX+targetX)/2,535,targetX,targetY+22);c.stroke();c.strokeStyle=outline;c.lineWidth=36;c.beginPath();c.moveTo(targetX-(flip?8:-8),targetY+29);c.lineTo(targetX,targetY+9);c.stroke();ellipse(targetX,targetY,24,31,skin,outline);for(let i=-2;i<=2;i++)ellipse(targetX+i*8,targetY-20-Math.abs(i)*2,5,15,skin,outline);c.restore()};
+  const active=e.pressed&&e.last,target=active?e.last!:{x:650,y:520};
+  arm(905,target.x,target.y,true);arm(55,active?Math.max(245,target.x-165):310,active?Math.min(480,target.y+55):520,false);
  }
  function drawTaskBadge(){
   const labels:Record<typeof k,string>={slice:'KỸ THUẬT DAO',dice:'CẮT HẠT LỰU',mince:'BĂM NHUYỄN',mix:'TRỘN ĐỀU',fold:'TẠO HÌNH',boil:'KIỂM SOÁT NHIỆT',find:'MISE EN PLACE',choose:'ĐỌC PHIẾU ORDER',pour:'ĐỊNH LƯỢNG',fry:'CANH ĐỘ CHÍN',wash:'RỬA & LÀM SẠCH',season:'NÊM THEO NHỊP',plate:'TRÌNH BÀY MÓN',grate:'BÀO THÀNH SỢI',knead:'NHÀO & GẬP BỘT',assemble:'LẮP RÁP TỰ DO'};
