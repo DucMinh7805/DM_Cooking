@@ -25,7 +25,7 @@ export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolea
  const pulse=motion?1+Math.sin(time/180)*.08:1;
  const k=e.step.kind,isCooktop=k==='boil'||k==='fry'||k==='pour'||k==='season';
 
- const station=k==='find'?pantryStation:k==='wash'?washStation:(k==='fold'||k==='knead'||k==='grate')?pastryStation:(k==='plate'||k==='assemble')?platingStation:isCooktop?cooktopStation:prepStation;
+ const station=(k==='find'||k==='choose')?pantryStation:k==='wash'?washStation:(k==='fold'||k==='knead'||k==='grate')?pastryStation:(k==='plate'||k==='assemble')?platingStation:isCooktop?cooktopStation:prepStation;
  drawStation(station,isCooktop);
  drawTaskBadge();
 
@@ -35,6 +35,7 @@ export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolea
  else if(k==='fold')drawFolding();
  else if(k==='boil')drawBoiling();
  else if(k==='find')drawPantry();
+ else if(k==='choose')drawPortionChoice();
  else if(k==='pour')drawPouring();
  else if(k==='fry')drawFrying();
  else if(k==='wash')drawWashing();
@@ -53,7 +54,7 @@ export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolea
   shadow(25,'#06181166',12);box(78,78,804,432,34,cooktop?'#242827':'#e2b77d',cooktop?'#b9875c':'#f2d5a8');clearShadow();
  }
  function drawTaskBadge(){
-  const labels:Record<typeof k,string>={slice:'KỸ THUẬT DAO',dice:'CẮT HẠT LỰU',mince:'BĂM NHUYỄN',mix:'TRỘN ĐỀU',fold:'TẠO HÌNH',boil:'KIỂM SOÁT NHIỆT',find:'MISE EN PLACE',pour:'ĐỊNH LƯỢNG',fry:'CANH ĐỘ CHÍN',wash:'RỬA & LÀM SẠCH',season:'NÊM THEO NHỊP',plate:'TRÌNH BÀY MÓN',grate:'BÀO THÀNH SỢI',knead:'NHÀO & GẬP BỘT',assemble:'LẮP RÁP TỰ DO'};
+  const labels:Record<typeof k,string>={slice:'KỸ THUẬT DAO',dice:'CẮT HẠT LỰU',mince:'BĂM NHUYỄN',mix:'TRỘN ĐỀU',fold:'TẠO HÌNH',boil:'KIỂM SOÁT NHIỆT',find:'MISE EN PLACE',choose:'ĐỌC PHIẾU ORDER',pour:'ĐỊNH LƯỢNG',fry:'CANH ĐỘ CHÍN',wash:'RỬA & LÀM SẠCH',season:'NÊM THEO NHỊP',plate:'TRÌNH BÀY MÓN',grate:'BÀO THÀNH SỢI',knead:'NHÀO & GẬP BỘT',assemble:'LẮP RÁP TỰ DO'};
   box(32,22,168,34,17,'#143d32e8','#ffffff33');text(labels[k],116,39,11,'#fff1c8',900);
  }
  function drawKnife(x:number,y:number,angle:number){
@@ -117,6 +118,13 @@ export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolea
  function drawPantry(){
   const labels=['Cà rốt','Sữa','Trứng','Chanh','Cải thảo','Cà chua'],target=[4,0,2][Math.min(e.accepted,2)];box(327,73,306,48,24,'#173f34e8','#ffffff33');text(`CHỌN: ${labels[target].toUpperCase()}`,480,97,18,'#fff1c8',900);
   labels.forEach((label,i)=>{const x=310+(i%3)*170,y=224+Math.floor(i/3)*148;shadow(12,'#5b3d2655',6);box(x-70,y-56,140,118,22,i===target?'#fff6da':'#fffaf0',i===target?'#e1ad39':'#d9c39e');clearShadow();drawIngredient(i,x,y-8);text(label,x,y+43,14,'#274b3d',800)});
+ }
+ function drawPortionChoice(){
+  const portions=[{x:330,y:300,rx:80,ry:48,label:'S',count:3},{x:480,y:280,rx:105,ry:62,label:'M',count:5},{x:650,y:255,rx:132,ry:78,label:'L',count:7}],wanted=e.step.ingredient.includes('L')||e.step.ingredient.includes('lớn')?'L':e.step.ingredient.includes('S')||e.step.ingredient.includes('nhỏ')?'S':'M';
+  box(268,70,424,58,22,'#173f34e8','#ffffff33');text(`ORDER: BÁNH XẾP · SUẤT ${wanted}`,480,99,18,'#fff1c8',900);
+  portions.forEach(({x,y,rx,ry,label,count})=>{const target=label===wanted;shadow(14,'#3b2a1c55',7);ellipse(x,y,rx,ry,target?'#fff4cf':'#f7f0df',target?'#efbd4f':'#cfc3aa');clearShadow();for(let i=0;i<count;i++){const a=i/count*TAU;drawDumpling(x+Math.cos(a)*rx*.5,y+Math.sin(a)*ry*.45,18,(i%3-.5)*.14)}text(label,x,y+ry+28,24,target?'#ffe08a':'#fff4d8',900)});
+  if(hints){const target=portions.find(c=>c.label===wanted)!;c.save();c.translate(target.x,target.y-target.ry-24);c.scale(pulse,pulse);circle(0,0,20,'#efbd4f','#fff4b7');text('↓',0,1,19,'#214f40');c.restore()}
+  box(304,486,352,40,20,'#173f34e8');text('ĐỌC ORDER · CHỌN ĐÚNG KHẨU PHẦN',480,506,14,'#fff1cf',900);
  }
  function drawIngredient(i:number,x:number,y:number){
   c.save();c.translate(x,y);

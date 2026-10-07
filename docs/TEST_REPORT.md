@@ -1,10 +1,10 @@
-# Kiểm thử thực tế — Studio Edition V0.6
+# Kiểm thử thực tế — Studio Edition V0.7
 Ngày: 07/10/2026. Môi trường: Node.js 24, TypeScript 5.9, Phaser 3.90.0, Vite 7.3.7, Playwright Chromium 153.
 
 ## Kết quả
 - `npm run build`: TypeScript strict và build production đạt
-- `npm test`: 10/10 nhóm đạt
-- `npm run test:e2e`: 4/4 kịch bản đạt trên Chrome, gồm viewport iPad và luồng order không modal
+- `npm test`: 11/11 nhóm đạt
+- `npm run test:e2e`: 6/6 kịch bản đạt trên Chrome, gồm điện thoại dọc, iPad dọc/ngang và ca phục vụ món ăn
 - Production offline: nạp đủ bundle, 3 ảnh món và 6 nền bếp; reload khi offline và bắt đầu một món đạt
 - Kiểm tra trực quan trong trình duyệt: sảnh ba chế độ, bồn rửa, HUD, modal hướng dẫn và bố cục dọc/ngang hiển thị đúng
 
@@ -25,12 +25,15 @@ Ngày: 07/10/2026. Môi trường: Node.js 24, TypeScript 5.9, Phaser 3.90.0, Vi
 14. Sáu nền bếp tải được trong canvas, ảnh chụp công đoạn không bị lỗi CORS và điều khiển cảm ứng vẫn giữ đúng tỉ lệ 960×560
 15. Ba engine mới: rửa theo quỹ đạo, nêm theo vùng nhịp và bày đĩa kéo-thả đều hoàn thành đúng mục tiêu và từ chối thao tác sai
 16. Bào bắt buộc đổi chiều, nhào bắt buộc gập luân phiên và lắp ráp lưu đúng sáu vị trí topping tự chọn
-17. Ca phục vụ hiển thị ba order khách; Hộp bí mật tự chuyển từ rửa sang bào mà không tạo review modal
+17. Ca phục vụ buộc nhập đủ ba nhóm hàng trước khi mở cửa; hiển thị hàng chờ và ba order khách
+18. Order bánh xếp chọn đúng suất L rồi tự chuyển sang băm nhân, giữ yêu cầu khách trên HUD
+19. Điện thoại 390×844 và iPad 768×1024 không tạo cuộn ngang; canvas nằm trong viewport và đủ chiều cao thao tác
+20. Hộp bí mật tự chuyển từ rửa sang bào mà không tạo review modal
 
 ## Giới hạn
 - Chưa thử Safari/iPad thật, bàn tay kéo trên màn cảm ứng thật hoặc hiệu năng thiết bị thật
 - Touch e2e mới thử bước chọn nguyên liệu; kéo/circular gestures đã kiểm tra bằng chuột trong Chromium
-- Đã kiểm tra logic đủ 15 engine; chưa chạy trọn gà/cơm chiên trong e2e
+- Đã kiểm tra logic đủ 16 engine; chưa chạy trọn gà/cơm chiên trong e2e
 - Không sao chép tài sản hoặc bố cục 1:1 từ game tham chiếu; đây là game riêng với nhịp chơi cùng thể loại
 - Âm thanh là hiệu ứng tổng hợp, chưa có nhạc; không kiểm định âm thanh bằng nghe trên máy thật
 - Build cảnh báo bundle Phaser >500 kB; đây là cảnh báo kích thước, không phải lỗi build

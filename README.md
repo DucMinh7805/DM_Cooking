@@ -1,6 +1,13 @@
-# World Kitchen — Studio Edition V0.6
+# World Kitchen — Studio Edition V0.7
 
 Dự án nhiều tệp **Phaser 3 + TypeScript + Vite**, không phải một file HTML chứa toàn bộ game. `index.html` chỉ là điểm vào. Đây là vertical slice 3 món, có mã chạy và build production; thiết kế lấy cảm hứng từ nhịp chơi của game học nấu ăn cổ điển nhưng dùng thương hiệu, giao diện và tài sản hình ảnh gốc riêng.
+
+## Mới trong V0.7
+- Ca bán hàng theo đúng vòng lặp tham khảo: nhập kho → mở cửa → hàng chờ khách → đọc order → sơ chế/nấu → giao món → tiền và tip.
+- Order bánh xếp phục vụ mới gồm chọn đúng khẩu phần, băm/trộn nhân, gấp bánh, canh đáy giòn, châm nước và tách sốt; HUD giữ yêu cầu khách trong suốt quá trình.
+- Giao diện responsive mới cho điện thoại dọc, điện thoại ngang, iPad dọc/ngang; không còn bắt buộc xoay ngang.
+- Hướng dẫn cài riêng cho iPhone/iPad, Android và desktop. Service worker kiểm tra bản mới, báo cập nhật và chỉ tải lại sau khi người chơi đồng ý.
+- Tổng cộng 16 engine công việc bếp; CI tạo gói `world-kitchen-web-build` tải về sau mỗi lần push.
 
 ## Mới trong V0.6
 - Ca phục vụ bắt đầu từ lời khách và ba loại order có ưu tiên riêng, thay vì nhảy thẳng vào một công thức cố định.
@@ -52,17 +59,19 @@ npm run preview
 
 Bản build nằm trong `dist/`. Để đưa lên web server, chép **toàn bộ nội dung dist**, gồm assets, service worker, icon và manifest. Trong gói có sẵn dist được build từ mã nguồn này.
 
-## Chơi trên iPad
-Chạy `npm run dev -- --host 0.0.0.0` trên laptop, kết nối iPad cùng Wi-Fi và mở địa chỉ IP LAN của laptop với cổng Vite. Cách này dành cho chạy thử; cache offline/service worker cần **HTTPS** hoặc localhost. Có thể đưa dist lên hosting HTTPS để dùng Safari và thêm vào màn hình chính. Không có hosting đã triển khai hoặc app iOS native trong gói này.
+## Cài và chơi trên điện thoại/iPad
+Để cài như ứng dụng, bản production phải được đặt trên hosting **HTTPS**. Android/Chrome chọn **Cài đặt ứng dụng**; iPhone/iPad mở bằng Safari, chọn **Chia sẻ → Thêm vào Màn hình chính**. Mở game một lần khi có mạng để tải cache offline. Trong game, mở **Cài đặt → Xem cách cài** để xem hướng dẫn đúng thiết bị.
 
-Giao diện ưu tiên iPad nằm ngang. Engine giữ tỷ lệ vùng bếp 12:7 và tự scale tọa độ. Có thông báo xoay ngang khi cầm dọc. Mỗi người chơi trên máy riêng, không multiplayer hoặc đồng bộ tài khoản.
+Để thử trong mạng nội bộ, chạy `npm run dev -- --host 0.0.0.0`, kết nối thiết bị cùng Wi-Fi và mở IP LAN của laptop. Cách này chưa cài PWA/offline được nếu không có HTTPS. Giao diện hỗ trợ cả dọc và ngang; engine vẫn giữ vùng thao tác 12:7 nhưng tự co vào diện tích khả dụng và chừa safe-area cho tai thỏ/thanh Home.
+
+Khi có bản mới, service worker tải bản đó ở nền và hiện nút **Cập nhật ngay**. Chỉ khi người chơi bấm, worker mới kích hoạt và trang tải lại; `localStorage` không bị xóa. Nút **Kiểm tra bản mới** nằm trong Cài đặt.
 
 ## Chức năng đã có
 | Nhóm | Chức năng |
 |---|---|
 | Nội dung | Bánh xếp áp chảo (9 bước), gà Cung Bảo (8 bước), cơm chiên (7 bước), một ca sáng tạo 6 bước |
-| Mini-game | 15 cơ chế, bổ sung bào đổi chiều, nhào/gập bột và lắp ráp món tự do |
-| Chế độ | Giáo trình, ca phục vụ theo yêu cầu khách, Hộp nguyên liệu bí mật |
+| Mini-game | 16 cơ chế, gồm đọc order/chọn khẩu phần, bào, nhào, lắp ráp, nhiệt, dao và định lượng |
+| Chế độ | Giáo trình, ca bán hàng có kho/order/hàng chờ, Hộp nguyên liệu bí mật |
 | Tiến trình | Món kế mở khi món trước đạt 70 điểm; lưu điểm cao nhất |
 | Chơi | Tutorial trước mỗi bước, timer, phản hồi đúng/sai, pause, retry, kết quả từng bước |
 | Practice | 12 bài mục tiêu, gồm rửa, nêm, bày đĩa, bào, nhào và lắp ráp; không làm thay đổi hành trình |
@@ -70,7 +79,7 @@ Giao diện ưu tiên iPad nằm ngang. Engine giữ tỷ lệ vùng bếp 12:7 
 | Âm thanh | Hiệu ứng tổng hợp bằng Web Audio: click, cắt, đúng/sai, hoàn thành; chưa có nhạc nền |
 | Bản lưu | Tự lưu localStorage, tiếp tục từ đầu bước đang nấu, xuất/nhập JSON có kiểm tra schema |
 | Reset | Hộp xác nhận trước khi xóa hoặc thay thế tiến độ |
-| Offline | Manifest và service worker precache bundle cho bản production qua HTTPS/localhost |
+| Offline/cập nhật | Manifest, precache production, kiểm tra bản mới và cập nhật có xác nhận qua HTTPS/localhost |
 
 Lưu ý: bản lưu v2 không nhập trực tiếp bản v1 của prototype cũ. Import thay thế tiến độ sau khi xác nhận. Không bảo đảm localStorage tồn tại nếu người dùng xóa dữ liệu web/đổi trình duyệt; dùng xuất JSON để chuyển máy. Chưa lưu vị trí giữa một cử chỉ; checkpoint là đầu bước.
 
@@ -81,7 +90,7 @@ Lưu ý: bản lưu v2 không nhập trực tiếp bản v1 của prototype cũ.
 - `src/core/scoring.ts`: điểm và sao
 - `src/core/save.ts`: validation, tiến độ, checkpoint, import/export
 - `src/core/audio.ts`: hiệu ứng âm thanh
-- `src/minigames/engine.ts`: logic 15 thao tác, độc lập Phaser
+- `src/minigames/engine.ts`: logic 16 thao tác, độc lập Phaser
 - `src/scenes/KitchenScene.ts`: scene, input, scale và vòng cập nhật Phaser
 - `src/render/kitchen.ts`: hình bếp, nguyên liệu và trạng thái được vẽ riêng
 - `src/ui/dom.ts`, `src/styles.css`: thành phần giao diện

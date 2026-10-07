@@ -10,6 +10,8 @@ Các game nấu ăn tốt không chỉ đổi nguyên liệu trên cùng một t
 - [Cookingdom](https://play.google.com/store/apps/details?id=com.abi.cook.chill) nhấn mạnh từng bước ngắn, cảm giác ASMR, không tạo áp lực timer và đi từ sơ chế tới bày đĩa.
 - [Good Pizza, Great Pizza](https://goodpizzagreatpizza.com/) tạo biến số từ lời khách, cách hiểu order, rất nhiều tổ hợp topping, nâng cấp thiết bị và nhân vật/câu chuyện.
 - [Overcooked](https://www.team17.com/games/overcooked) tạo căng thẳng từ hàng đợi order, phối hợp nhiều công việc và phục vụ trước khi khách mất kiên nhẫn.
+- [Tiệm Trà Nhỏ](https://tiemtranho.com/game) cho thấy một vòng quản lý rõ ràng: nhập hàng, mở cửa, khách xếp hàng, đọc order, thực hiện từng thao tác rồi giao khách. Demo chỉ học cấu trúc vòng lặp này và chuyển toàn bộ nội dung sang món ăn.
+- [Cooking Marina trên Playgama](https://playgama.com/game/cooking-marina--cooking-games) nối order, nấu bằng nhiều phương pháp, combo, tiền/tip và nâng cấp dụng cụ qua nhiều nhà hàng.
 
 Từ đó, một công đoạn nên thay đổi ít nhất hai trong bốn trục sau:
 
@@ -51,13 +53,15 @@ Từ đó, một công đoạn nên thay đổi ít nhất hai trong bốn trụ
 | Vệ sinh | Rửa chén | Chà vết bẩn | tranh thủ giữa thời gian nấu |
 | Sự cố | Dập lửa | Chọn dụng cụ + quét | hậu quả nếu bỏ bếp quá lâu |
 
-## Những gì đã đưa vào demo V0.6
+## Những gì đã đưa vào demo V0.7
 
-- Màn Ca phục vụ có ba khách với lời yêu cầu, ràng buộc và ưu tiên khác nhau.
+- Ca phục vụ có bước nhập kho và mở cửa trước khi khách xuất hiện.
+- Hàng chờ giữ ba khách; order hiển thị khẩu phần, độ cay/độ chín, cách bày món, thời gian chờ và tiền thưởng.
+- Bánh xếp suất lớn là chuỗi phục vụ riêng: đọc phiếu/chọn khẩu phần, băm/trộn nhân, gấp bánh, canh đáy giòn, châm nước, tách sốt và giao.
 - Ba cơ chế mới: bào đổi chiều, nhào/gập luân phiên và lắp ráp topping tự do.
 - Hộp nguyên liệu bí mật tăng từ 7 công đoạn kiểu cũ lên 7 công việc có cử chỉ khác loại.
 - Chế độ Rush và Sáng tạo tự chuyển trạm, không bắt người chơi đóng modal điểm sau mọi bước.
-- Tổng engine tăng từ 12 lên 15 công việc.
+- Tổng engine tăng lên 16 công việc, gồm cơ chế đọc order/chọn khẩu phần món ăn.
 
 ## Hướng tiếp theo nên ưu tiên
 

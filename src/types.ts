@@ -1,4 +1,4 @@
-export type Kind='slice'|'dice'|'mince'|'mix'|'fold'|'boil'|'find'|'pour'|'fry'|'wash'|'season'|'plate'|'grate'|'knead'|'assemble';
+export type Kind='slice'|'dice'|'mince'|'mix'|'fold'|'boil'|'find'|'choose'|'pour'|'fry'|'wash'|'season'|'plate'|'grate'|'knead'|'assemble';
 export type Difficulty='easy'|'normal';
 export interface Step {id:string;kind:Kind;name:string;hint:string;ingredient:string;target:number;par:number;limit:number}
 export interface Recipe {id:string;name:string;country:string;emoji:string;description:string;steps:Step[];requires?:string;art?:string}

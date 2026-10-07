@@ -45,6 +45,11 @@ test('find uses ordered requests, timeout stops all future progress',()=>{
  const e=new MiniEngine(make('find',3),'easy');for(const p of [{x:480,y:350},{x:310,y:210},{x:650,y:210}]){e.down(p);e.up(p)}assert.ok(e.completed);
  const timed=new MiniEngine(make('slice',6),'normal');timed.update(60);assert.ok(timed.done&&!timed.completed);timed.down(timed.lines()[0][0]);assert.equal(timed.accepted,0);
 });
+test('food order requires the portion size written on the ticket',()=>{
+ const e=new MiniEngine({...make('choose',1),ingredient:'suất L'},'normal');
+ e.down({x:330,y:290});e.up({x:330,y:290});assert.equal(e.rejected,1);assert.ok(!e.done);
+ e.down({x:640,y:245});e.up({x:640,y:245});assert.ok(e.completed);assert.equal(e.accepted,1);
+});
 test('wash, seasoning rhythm and plating use distinct gestures',()=>{
  const wash=new MiniEngine(make('wash',3),'easy');wash.down({x:590,y:275});for(let i=1;i<=120&&!wash.done;i++){const a=i*.25;wash.move({x:480+Math.cos(a)*110,y:275+Math.sin(a)*80})}wash.up({x:590,y:275});assert.ok(wash.completed);assert.ok(wash.washTrail.length>0);
  const season=new MiniEngine(make('season',4),'easy');for(let i=0;i<4;i++){season.seasonNeedle=.5;season.down({x:480,y:125});season.cancel()}assert.ok(season.completed);

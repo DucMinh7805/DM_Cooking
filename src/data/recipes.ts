@@ -1,5 +1,5 @@
 import type {Kind,Recipe,Step} from '../types';
-export const kinds:Kind[]=['slice','dice','mince','mix','fold','boil','find','pour','fry','wash','season','plate','grate','knead','assemble'];
+export const kinds:Kind[]=['slice','dice','mince','mix','fold','boil','find','choose','pour','fry','wash','season','plate','grate','knead','assemble'];
 export function step(kind:Kind,ingredient='rau củ'):Step {
  const defs:Record<Kind,[string,string,number,number,number]>={
  slice:['Thái nguyên liệu','Kéo từ điểm vàng tới điểm xanh theo đường cắt',6,30,75],
@@ -9,6 +9,7 @@ export function step(kind:Kind,ingredient='rau củ'):Step {
  fold:['Gấp há cảo','Kéo điểm vàng sang vùng màu xanh',3,30,75],
  boil:['Canh nhiệt','Dùng thanh nhiệt, giữ vùng xanh 50–75 đủ 10 giây',10,25,75],
  find:['Chọn nguyên liệu','Chạm đúng nguyên liệu được yêu cầu, theo thứ tự',3,20,60],
+ choose:['Đọc order và chia đúng khẩu phần','Đối chiếu phiếu order rồi chạm đúng cỡ phần ăn',1,10,35],
  pour:['Rót nước sốt','Giữ trong vùng bình để rót; thả khi thanh nằm trong vùng xanh',1,15,60],
  fry:['Áp chảo','Chạm từng miếng khi vòng nấu nằm trong vùng xanh',4,20,65],
  wash:['Rửa nguyên liệu','Giữ và chà qua toàn bộ bề mặt đến khi sạch',8,24,60],

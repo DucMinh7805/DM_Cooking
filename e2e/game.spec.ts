@@ -37,10 +37,20 @@ test('objective practice, retry, settings, export and reject malformed import',a
 test('iPad landscape touch selection and canvas resize',async({browser})=>{
  const context=await browser.newContext({viewport:{width:1024,height:768},hasTouch:true,isMobile:true,deviceScaleFactor:2});const page=await context.newPage();await page.goto('http://127.0.0.1:5173');await page.getByRole('button',{name:'Vào bài học đầu tiên',exact:true}).tap();await page.getByRole('button',{name:'Bắt đầu',exact:true}).tap();for(const[x,y]of [[480,350],[310,210],[650,210]]){const p=await map(page,x,y);await page.touchscreen.tap(p.x,p.y)}await expect(page.locator('.review-dialog')).toBeVisible();await page.screenshot({path:'test-artifacts/ipad-touch.png',fullPage:true});await context.close();
 });
-test('customer order board and creative mode move between jobs without score modal',async({page})=>{
+test('service shift prepares food stock, opens the shop and starts a real dish order',async({page})=>{
  await page.goto('/');await page.getByRole('button',{name:'Mở quầy phục vụ',exact:true}).click();
- await expect(page.getByRole('heading',{name:'Ba khách, ba cách hiểu order.'})).toBeVisible();await expect(page.locator('.customer-order')).toHaveCount(3);
- const creative=page.locator('.customer-order').filter({has:page.getByRole('heading',{name:'Hộp nguyên liệu bí mật'})});await creative.getByRole('button',{name:'Nhận order này'}).click();await startStep(page);
+ await expect(page.getByRole('heading',{name:'Chuẩn bị bếp trước giờ mở cửa.'})).toBeVisible();
+ await page.getByRole('button',{name:'Thêm Rau củ & gia vị'}).click();await page.getByRole('button',{name:'Thêm Thịt, gạo & bột'}).click();await page.getByRole('button',{name:'Thêm Đĩa, hộp & giấy gói'}).click();
+ await page.getByRole('button',{name:'Mở cửa đón khách →',exact:true}).click();await expect(page.locator('.customer-order')).toHaveCount(3);
+ const dish=page.locator('.customer-order').filter({has:page.getByRole('heading',{name:'Bánh xếp giòn · suất lớn'})});await dish.getByRole('button',{name:'Nhận order và vào quầy'}).click();
+ await page.getByRole('button',{name:'Bắt đầu order',exact:true}).click();await tap(page,640,245);
+ await expect(page.locator('#step-title')).toHaveText('Băm rau làm nhân',{timeout:4000});await expect(page.locator('#order-strip')).toContainText('SUẤT L');
+});
+test('creative mode moves between different jobs without score modal',async({page})=>{
+ await page.goto('/');await page.getByRole('button',{name:'Mở hộp bí mật',exact:true}).click();await startStep(page);
  const scrubStart=await map(page,590,275);await page.mouse.move(scrubStart.x,scrubStart.y);await page.mouse.down();for(let i=1;i<=150;i++){const a=i*.25,p=await map(page,480+Math.cos(a)*110,275+Math.sin(a)*80);await page.mouse.move(p.x,p.y)}await page.mouse.up();
  await expect(page.locator('#step-title')).toHaveText('Bào củ sen thành sợi',{timeout:4000});await expect(page.locator('.review-dialog')).toHaveCount(0);await expect(page.locator('#overlay')).toBeHidden({timeout:4000});
+});
+test('phone portrait and iPad portrait stay inside the viewport',async({browser})=>{
+ for(const viewport of [{width:390,height:844},{width:768,height:1024}]){const context=await browser.newContext({viewport,hasTouch:true,isMobile:true,deviceScaleFactor:2});const page=await context.newPage();await page.goto('http://127.0.0.1:5173');const metrics=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,width:window.innerWidth}));expect(metrics.overflow).toBeLessThanOrEqual(1);await page.getByRole('button',{name:'Vào bài học đầu tiên',exact:true}).tap();await page.getByRole('button',{name:'Bắt đầu',exact:true}).tap();const canvas=await page.locator('canvas').boundingBox();expect(canvas).not.toBeNull();expect(canvas!.width).toBeLessThanOrEqual(metrics.width+1);expect(canvas!.height).toBeGreaterThan(200);await context.close()}
 });
