@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./e2e',timeout:90000,use:{baseURL:'http://127.0.0.1:5173',viewport:{width:1180,height:900},launchOptions:process.env.CHROMIUM_EXECUTABLE?{executablePath:process.env.CHROMIUM_EXECUTABLE,args:['--no-sandbox','--disable-gpu','--disable-dev-shm-usage']}:{}},webServer:{command:'npm run dev -- --port 5173 --host 127.0.0.1',url:'http://127.0.0.1:5173',reuseExistingServer:!process.env.CI},reporter:'list'});

@@ -1,0 +1,10 @@
+import {readdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+const walk=(dir,url)=>readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?walk(`${dir}/${entry.name}`,`${url}/${entry.name}`):[`${url}/${entry.name}`]);
+const assets=walk('dist/assets','./assets');
+const digest=createHash('sha256').update(assets.join('|')).digest('hex').slice(0,10);
+let sw=readFileSync('public/sw.js','utf8');
+sw=sw.replace('world-kitchen-v02-1','world-kitchen-'+digest);
+sw=sw.replace("['./','./index.html','./manifest.webmanifest','./icon.svg']",JSON.stringify(['./','./index.html','./manifest.webmanifest','./icon.svg',...assets]));
+writeFileSync('dist/sw.js',sw);
+console.log('Offline precache: '+assets.length+' bundle assets.');

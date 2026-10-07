@@ -1,0 +1,3 @@
+export function node<K extends keyof HTMLElementTagNameMap>(tag:K,text='',className=''){const el=document.createElement(tag);el.textContent=text;if(className)el.className=className;return el}
+export function button(text:string,fn:()=>void,secondary=false){const b=node('button',text,secondary?'secondary':'');b.addEventListener('click',fn);return b}
+export function confirmDialog(text:string,onAccept:()=>void){const d=node('dialog');d.append(node('h2','Xác nhận'),node('p',text));const a=node('div','','actions');a.append(button('Hủy',()=>d.close(),true),button('Đồng ý',()=>{d.close();onAccept()}));d.append(a);d.addEventListener('close',()=>d.remove());document.body.append(d);d.showModal()}
