@@ -62,6 +62,8 @@ Bản build nằm trong `dist/`. Để đưa lên web server, chép **toàn bộ
 ## Cài và chơi trên điện thoại/iPad
 Để cài như ứng dụng, bản production phải được đặt trên hosting **HTTPS**. Android/Chrome chọn **Cài đặt ứng dụng**; iPhone/iPad mở bằng Safari, chọn **Chia sẻ → Thêm vào Màn hình chính**. Mở game một lần khi có mạng để tải cache offline. Trong game, mở **Cài đặt → Xem cách cài** để xem hướng dẫn đúng thiết bị.
 
+Bản `main` được GitHub Actions build và phát hành lên GitHub Pages tại `https://ducminh7805.github.io/DM_Cooking/`. Pages đã dùng nguồn **GitHub Actions** và bắt buộc HTTPS; mỗi lần push thành công, website và service worker được cập nhật tự động.
+
 Để thử trong mạng nội bộ, chạy `npm run dev -- --host 0.0.0.0`, kết nối thiết bị cùng Wi-Fi và mở IP LAN của laptop. Cách này chưa cài PWA/offline được nếu không có HTTPS. Giao diện hỗ trợ cả dọc và ngang; engine vẫn giữ vùng thao tác 12:7 nhưng tự co vào diện tích khả dụng và chừa safe-area cho tai thỏ/thanh Home.
 
 Khi có bản mới, service worker tải bản đó ở nền và hiện nút **Cập nhật ngay**. Chỉ khi người chơi bấm, worker mới kích hoạt và trang tải lại; `localStorage` không bị xóa. Nút **Kiểm tra bản mới** nằm trong Cài đặt.

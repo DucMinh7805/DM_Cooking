@@ -7,12 +7,13 @@ const pantryStation=typeof Image==='undefined'?null:new Image();
 const pastryStation=typeof Image==='undefined'?null:new Image();
 const platingStation=typeof Image==='undefined'?null:new Image();
 const washStation=typeof Image==='undefined'?null:new Image();
-if(prepStation)prepStation.src='/assets/kitchen/prep-station-v1.png';
-if(cooktopStation)cooktopStation.src='/assets/kitchen/cooktop-station-v1.png';
-if(pantryStation)pantryStation.src='/assets/kitchen/pantry-station-v1.png';
-if(pastryStation)pastryStation.src='/assets/kitchen/pastry-station-v1.png';
-if(platingStation)platingStation.src='/assets/kitchen/plating-station-v1.png';
-if(washStation)washStation.src='/assets/kitchen/wash-station-v1.png';
+const asset=(path:string)=>`${import.meta.env.BASE_URL}${path}`;
+if(prepStation)prepStation.src=asset('assets/kitchen/prep-station-v1.png');
+if(cooktopStation)cooktopStation.src=asset('assets/kitchen/cooktop-station-v1.png');
+if(pantryStation)pantryStation.src=asset('assets/kitchen/pantry-station-v1.png');
+if(pastryStation)pastryStation.src=asset('assets/kitchen/pastry-station-v1.png');
+if(platingStation)platingStation.src=asset('assets/kitchen/plating-station-v1.png');
+if(washStation)washStation.src=asset('assets/kitchen/wash-station-v1.png');
 
 export function drawKitchen(c:CanvasRenderingContext2D,e:MiniEngine,hints:boolean,motion:boolean,time:number){
  const box=(x:number,y:number,w:number,h:number,r:number,color:string,stroke='')=>{c.fillStyle=color;c.beginPath();c.roundRect(x,y,w,h,r);c.fill();if(stroke){c.strokeStyle=stroke;c.lineWidth=2;c.stroke()}};
